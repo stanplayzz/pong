@@ -17,12 +17,12 @@ void Ball::bounceY()
 	m_ballDirectionY = -m_ballDirectionY;
 }
 
-sf::CircleShape Ball::getShape() const
+const sf::CircleShape& Ball::getShape() const
 {
 	return m_ballShape;
 }
 
-sf::FloatRect Ball::getPosition() const
+const sf::FloatRect& Ball::getPosition() const
 {
 	return m_ballShape.getGlobalBounds();
 }

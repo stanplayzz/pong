@@ -9,8 +9,8 @@ public:
 
 	void bounceX();
 	void bounceY();
-	[[nodiscard]] sf::CircleShape getShape() const;
-	[[nodiscard]] sf::FloatRect getPosition() const;
+	[[nodiscard]] const sf::CircleShape& getShape() const;
+	[[nodiscard]] const sf::FloatRect& getPosition() const;
 	void update(sf::Time deltaTime);
 
 private:

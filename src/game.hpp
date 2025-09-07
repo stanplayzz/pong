@@ -11,7 +11,6 @@ class Game
 {
 public:
 	Game();
-	~Game();
 
 	void createWindow();
 	void run();

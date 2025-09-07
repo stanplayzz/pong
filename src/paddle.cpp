@@ -9,12 +9,12 @@ Paddle::Paddle(float startX, float startY) : m_position(startX, startY)
 	m_paddle.setOrigin(m_paddle.getGeometricCenter());
 }
 
-sf::RectangleShape Paddle::getShape() const
+const sf::RectangleShape& Paddle::getShape() const
 {
 	return m_paddle;
 }
 
-sf::FloatRect Paddle::getPosition() const
+const sf::FloatRect& Paddle::getPosition() const
 {
 	return m_paddle.getGlobalBounds();
 }

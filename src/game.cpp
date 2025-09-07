@@ -7,10 +7,6 @@ Game::Game() : m_ball(0, -720/2), m_paddle(1280 /2 - 100, 0)
 {
 }
 
-Game::~Game()
-{
-}
-
 void Game::createWindow()
 {
 	m_window.create(sf::VideoMode({ 1280, 720 }), "This is totally not a recreation of the famous game named 'pong' originally created by Allan Alcorn", sf::Style::Titlebar | sf::Style::Close);
