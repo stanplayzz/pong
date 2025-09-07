@@ -17,6 +17,8 @@ void Game::createWindow()
 
 void Game::run()
 {
+	Game::createWindow();
+
 	sf::Clock clock;
 
 	sf::Time deltaTime;

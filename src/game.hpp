@@ -12,12 +12,13 @@ class Game
 public:
 	Game();
 
-	void createWindow();
 	void run();
 	void processInput();
 	void handleBall();
 
 private:
+	void createWindow();
+
 	sf::RenderWindow m_window;
 	sf::View m_view;
 
