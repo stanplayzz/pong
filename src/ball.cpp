@@ -1,10 +1,7 @@
 #include "ball.hpp"
 
-Ball::Ball(float startX, float startY)
+Ball::Ball(float startX, float startY) : m_position(startX, startY)
 {
-	m_position.x = startX;
-	m_position.y = startY;
-
 	m_ballShape.setRadius(25.f);
 	m_ballShape.setFillColor(sf::Color::Magenta);
 	m_ballShape.setPosition(m_position);
@@ -20,12 +17,12 @@ void Ball::bounceY()
 	m_ballDirectionY = -m_ballDirectionY;
 }
 
-sf::CircleShape Ball::getShape()
+sf::CircleShape Ball::getShape() const
 {
 	return m_ballShape;
 }
 
-sf::FloatRect Ball::getPosition()
+sf::FloatRect Ball::getPosition() const
 {
 	return m_ballShape.getGlobalBounds();
 }

@@ -18,13 +18,9 @@ public:
 	void processInput();
 	void handleBall();
 
-	static std::map<sf::Keyboard::Key, bool> m_keyMap;
-
 private:
 	sf::RenderWindow m_window;
 	sf::View m_view;
-
-	
 
 	Ball m_ball;
 	Paddle m_paddle;

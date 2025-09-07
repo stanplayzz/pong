@@ -3,8 +3,6 @@
 
 #include <print>
 
-std::map<sf::Keyboard::Key, bool> Game::m_keyMap;
-
 Game::Game() : m_ball(0, -720/2), m_paddle(1280 /2 - 100, 0)
 {
 }
@@ -54,13 +52,6 @@ void Game::processInput()
 	{
 		if (event->is<sf::Event::Closed>())
 			m_window.close();
-
-		if (auto key = event->getIf<sf::Event::KeyPressed>())
-			Game::m_keyMap[key->code] = true;
-
-		if (auto key = event->getIf<sf::Event::KeyReleased>())
-			Game::m_keyMap[key->code] = false;
-
 	}
 }
 
