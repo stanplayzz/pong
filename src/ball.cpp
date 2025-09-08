@@ -22,7 +22,7 @@ const sf::CircleShape& Ball::getShape() const
 	return m_ballShape;
 }
 
-const sf::FloatRect& Ball::getPosition() const
+sf::FloatRect Ball::getPosition() const
 {
 	return m_ballShape.getGlobalBounds();
 }

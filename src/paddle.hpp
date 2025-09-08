@@ -8,7 +8,7 @@ public:
 	Paddle(float startX, float startY);
 
 	[[nodiscard]] const sf::RectangleShape& getShape() const;
-	[[nodiscard]] const sf::FloatRect& getPosition() const;
+	[[nodiscard]] sf::FloatRect getPosition() const;
 	void update(sf::Time deltaTime);
 
 private:
