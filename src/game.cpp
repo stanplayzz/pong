@@ -3,7 +3,7 @@
 
 #include <print>
 
-Game::Game() : m_ball(0, -720/2), m_paddle(1280 /2 - 100, 0)
+Game::Game()
 {
 }
 
@@ -29,18 +29,21 @@ void Game::run()
 
 		processInput();
 
-		handleBall();
+		auto to_state = m_current_state->update(deltaTime);
+		if (to_state != m_current_state->get_type())
+		{
+			switch (to_state)
+			{
+			case GameStateType::main_menu:
+				m_current_state = std::make_unique<MainMenuState>();
+				break;
+			case GameStateType::gameplay:
+				m_current_state = std::make_unique<GameplayState>();
+				break;
+			}
+		}
 
-		m_window.clear(sf::Color::Black);
-
-		m_ball.update(deltaTime);
-		m_paddle.update(deltaTime);
-		m_window.draw(m_ball.getShape());
-
-
-		m_window.draw(m_paddle.getShape());
-
-		m_window.display();
+		m_current_state->draw(m_window);
 	}
 }
 
@@ -53,22 +56,7 @@ void Game::processInput()
 	}
 }
 
-void Game::handleBall()
+sf::View Game::getView() const
 {
-	// view border collisions
-	if (m_ball.getPosition().position.x < -m_view.getSize().x / 2)
-		m_ball.bounceX();
-	if (m_ball.getPosition().position.x + m_ball.getPosition().size.x > m_view.getSize().x / 2)
-		m_window.close();
-	if (m_ball.getPosition().position.y < -m_view.getSize().y / 2 || m_ball.getPosition().position.y + m_ball.getPosition().size.y > m_view.getSize().y / 2)
-		m_ball.bounceY();
-
-	// paddle collisions
-	if (m_ball.getPosition().position.x + m_ball.getPosition().size.x > m_paddle.getPosition().position.x &&
-		m_ball.getPosition().position.y + m_ball.getPosition().size.y < m_paddle.getPosition().position.y + m_paddle.getPosition().size.y &&
-		m_ball.getPosition().position.y + m_ball.getPosition().size.y > m_paddle.getPosition().position.y
-		)
-	{
-		m_ball.bounceX();
-	}
+	return m_window.getView();
 }
