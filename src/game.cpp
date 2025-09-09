@@ -5,10 +5,6 @@
 
 Game::Game()
 {
-}
-
-void Game::createWindow()
-{
 	m_window.create(sf::VideoMode({ 1280, 720 }), "This is totally not a recreation of the famous game named 'pong' originally created by Allan Alcorn", sf::Style::Titlebar | sf::Style::Close);
 
 	m_view = sf::View(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(m_window.getSize()));
@@ -17,8 +13,6 @@ void Game::createWindow()
 
 void Game::run()
 {
-	Game::createWindow();
-
 	sf::Clock clock;
 
 	sf::Time deltaTime;
@@ -28,8 +22,10 @@ void Game::run()
 		deltaTime = clock.restart();
 
 		processInput();
+		m_current_state->draw(m_window);
 
-		auto to_state = m_current_state->update(deltaTime);
+		auto to_state = m_current_state->update(deltaTime, m_window);
+
 		if (to_state != m_current_state->get_type())
 		{
 			switch (to_state)
@@ -43,7 +39,7 @@ void Game::run()
 			}
 		}
 
-		m_current_state->draw(m_window);
+		
 	}
 }
 
@@ -51,6 +47,7 @@ void Game::processInput()
 {
 	while (auto event = m_window.pollEvent())
 	{
+		m_current_state->onEvent(event);
 		if (event->is<sf::Event::Closed>())
 			m_window.close();
 	}

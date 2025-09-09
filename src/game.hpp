@@ -15,14 +15,12 @@ public:
 
 	void run();
 	void processInput();
-	void handleBall();
 
 	sf::View getView() const;
 
 private:
-	void createWindow();
 
-	std::unique_ptr<GameState> m_current_state = std::make_unique<GameplayState>();
+	std::unique_ptr<GameState> m_current_state = std::make_unique<MainMenuState>();
 
 	sf::RenderWindow m_window;
 	sf::View m_view;
