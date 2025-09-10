@@ -21,10 +21,13 @@ void Game::run()
 	{
 		deltaTime = clock.restart();
 
-		processInput();
+
 		m_current_state->draw(m_window);
 
+		processInput();
+
 		auto to_state = m_current_state->update(deltaTime, m_window);
+		
 
 		if (to_state != m_current_state->get_type())
 		{

@@ -1,5 +1,7 @@
 #include "ball.hpp"
 
+#include <print>
+
 Ball::Ball(float startX, float startY) : m_position(startX, startY)
 {
 	m_ballShape.setRadius(25.f);
@@ -25,6 +27,16 @@ const sf::CircleShape& Ball::getShape() const
 sf::FloatRect Ball::getPosition() const
 {
 	return m_ballShape.getGlobalBounds();
+}
+
+sf::Vector2f Ball::getCenter() const
+{
+	return m_ballShape.getGeometricCenter();
+}
+
+float Ball::getRadius() const
+{
+	return m_ballShape.getRadius();
 }
 
 void Ball::update(sf::Time deltaTime)

@@ -11,6 +11,8 @@ public:
 	void bounceY();
 	[[nodiscard]] const sf::CircleShape& getShape() const;
 	[[nodiscard]] sf::FloatRect getPosition() const;
+	[[nodiscard]] sf::Vector2f getCenter() const;
+	[[nodiscard]] float getRadius() const;
 	void update(sf::Time deltaTime);
 
 private:

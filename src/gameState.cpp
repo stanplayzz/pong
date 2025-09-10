@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <print>
+#include <algorithm>
 #include <stdexcept>
 
 MainMenuState::MainMenuState()
@@ -29,13 +30,9 @@ GameStateType MainMenuState::update(sf::Time deltaTime, sf::RenderWindow& window
 
 void MainMenuState::onEvent(std::optional<sf::Event> event)
 {
-	if (event->is<sf::Event::KeyPressed>())
+	if (event->is<sf::Event::KeyReleased>())
 	{
 		m_target_type = GameStateType::gameplay;
-	}
-	else
-	{
-		m_target_type = GameStateType::main_menu;
 	}
 }
 
@@ -60,7 +57,7 @@ GameStateType GameplayState::update(sf::Time deltaTime, sf::RenderWindow& window
     
     handleBall(window);
 
-    return p_type;
+    return m_target_type;
 }
 
 void GameplayState::draw(sf::RenderWindow& window)
@@ -71,6 +68,8 @@ void GameplayState::draw(sf::RenderWindow& window)
     window.draw(m_paddle.getShape());
 
     window.display();
+
+	m_target_type = GameStateType::gameplay;
 }
 
 void GameplayState::handleBall(sf::RenderWindow& window)
@@ -81,16 +80,29 @@ void GameplayState::handleBall(sf::RenderWindow& window)
 	if (m_ball.getPosition().position.x < -view.getSize().x / 2)
 		m_ball.bounceX();
 	if (m_ball.getPosition().position.x + m_ball.getPosition().size.x > view.getSize().x / 2)
-		window.close();
+		m_target_type = GameStateType::main_menu;
 	if (m_ball.getPosition().position.y < -view.getSize().y / 2 || m_ball.getPosition().position.y + m_ball.getPosition().size.y > view.getSize().y / 2)
 		m_ball.bounceY();
 
 	// paddle collisions
-	if (m_ball.getPosition().position.x + m_ball.getPosition().size.x > m_paddle.getPosition().position.x &&
-		m_ball.getPosition().position.y + m_ball.getPosition().size.y < m_paddle.getPosition().position.y + m_paddle.getPosition().size.y &&
-		m_ball.getPosition().position.y + m_ball.getPosition().size.y > m_paddle.getPosition().position.y
-		)
+	float closestX = std::clamp(m_ball.getCenter().x, m_paddle.getPosition().position.x, m_paddle.getPosition().position.x + m_paddle.getPosition().size.x);
+	float closestY = std::clamp(m_ball.getCenter().y, m_paddle.getPosition().position.y, m_paddle.getPosition().position.y + m_paddle.getPosition().size.y);
+
+	float distX = m_ball.getCenter().x - closestX;
+	float distY = m_ball.getCenter().y - closestY;
+	float dist = std::sqrt(distX * distX + distY * distY);
+	std::println("{} {} {}", dist, closestX, closestY);
+	if (dist <= m_ball.getRadius())
 	{
 		m_ball.bounceX();
 	}
+
+
+	/*if (m_ball.getPosition().position.x + m_ball.getPosition().size.x > m_paddle.getPosition().position.x &&
+		m_ball.getPosition().position.x + m_ball.getPosition().size.x < m_paddle.getPosition().position.x + 5 &&
+		m_ball.getPosition().position.y < m_paddle.getPosition().position.y + m_paddle.getPosition().size.y &&
+		m_ball.getPosition().position.y + m_ball.getPosition().size.y > m_paddle.getPosition().position.y)
+	{
+		m_ball.bounceX();
+	}*/
 }
