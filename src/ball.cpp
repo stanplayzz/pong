@@ -31,7 +31,7 @@ sf::FloatRect Ball::getPosition() const
 
 sf::Vector2f Ball::getCenter() const
 {
-	return m_ballShape.getGeometricCenter();
+	return m_ballShape.getGlobalBounds().getCenter();
 }
 
 float Ball::getRadius() const

@@ -1,5 +1,6 @@
 #include "gameState.hpp"
 #include "game.hpp"
+#include "assetManager.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -9,10 +10,7 @@
 
 MainMenuState::MainMenuState()
 {
-	if (!m_font.openFromFile("assets/fonts/Coolvetica.otf"))
-	{
-		throw std::runtime_error("Failed to load font");
-	}
+	m_font = AssetManager::getFont("Coolvetica.otf");
 
 	m_startText.emplace(m_font);
 	m_startText->setString("Press Any Key To Play!");
@@ -91,7 +89,7 @@ void GameplayState::handleBall(sf::RenderWindow& window)
 	float distX = m_ball.getCenter().x - closestX;
 	float distY = m_ball.getCenter().y - closestY;
 	float dist = std::sqrt(distX * distX + distY * distY);
-	std::println("{} {} {}", dist, closestX, closestY);
+
 	if (dist <= m_ball.getRadius())
 	{
 		m_ball.bounceX();
