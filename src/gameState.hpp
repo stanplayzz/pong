@@ -3,6 +3,7 @@
 #include "ball.hpp"
 #include "paddle.hpp"
 #include "assetManager.hpp"
+#include "particle.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -35,6 +36,7 @@ public:
 private:
 	std::optional<sf::Text> m_startText;
 	sf::Font m_font;
+	ParticleSystem m_particleSystem;
 };
 
 class GameplayState final : public GameState

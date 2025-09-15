@@ -15,12 +15,15 @@ MainMenuState::MainMenuState()
 	m_startText->setFillColor(sf::Color::White);
 	m_startText->setCharacterSize(50);
 	m_startText->setOrigin(sf::Vector2f(m_startText->getLocalBounds().size.x / 2, m_startText->getLocalBounds().size.y / 2));
+	m_particleSystem.emit(sf::Vector2f(0.f, 0.f), sf::Time(sf::seconds(100)));
 
 	p_type = GameStateType::main_menu;
 }
 
 GameStateType MainMenuState::update(sf::Time deltaTime, sf::RenderWindow& window)
 {
+	m_particleSystem.update(deltaTime);
+
     return m_target_type;
 }
 
@@ -36,6 +39,7 @@ void MainMenuState::draw(sf::RenderWindow& window)
 {
     window.clear(sf::Color(0, 20, 40));
 
+	m_particleSystem.draw(window);
 	window.draw(*m_startText);
     
     window.display();
