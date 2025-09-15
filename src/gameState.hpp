@@ -2,8 +2,10 @@
 
 #include "ball.hpp"
 #include "paddle.hpp"
+#include "assetManager.hpp"
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <cstdint>
 
 enum class GameStateType : std::uint8_t { main_menu, gameplay };
@@ -48,4 +50,9 @@ private:
 
 	Ball m_ball;
 	Paddle m_paddle;
+
+	sf::SoundBuffer m_plopBuffer;
+	sf::SoundBuffer m_gameOverBuffer;
+	sf::Sound m_plop;
+	sf::Sound m_gameOver;
 };

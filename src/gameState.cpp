@@ -2,8 +2,6 @@
 #include "game.hpp"
 #include "assetManager.hpp"
 
-#include <SFML/Graphics.hpp>
-
 #include <print>
 #include <algorithm>
 #include <stdexcept>
@@ -43,7 +41,12 @@ void MainMenuState::draw(sf::RenderWindow& window)
     window.display();
 }
 
-GameplayState::GameplayState() : m_ball(0, -720 / 2), m_paddle(1280 / 2 - 100, 0)
+GameplayState::GameplayState() : m_ball(0, -720 / 2), 
+	m_paddle(1280 / 2 - 100, 0), 
+	m_plopBuffer(AssetManager::getSoundBuffer("Bounce.mp3")),
+	m_plop(m_plopBuffer),
+	m_gameOverBuffer(AssetManager::getSoundBuffer("GameOver.mp3")),
+	m_gameOver(m_gameOverBuffer)
 {
 	p_type = GameStateType::gameplay;
 }
@@ -75,12 +78,22 @@ void GameplayState::handleBall(sf::RenderWindow& window)
 	sf::View view = window.getView();
 
 	// view border collisions
-	if (m_ball.getPosition().position.x < -view.getSize().x / 2)
-		m_ball.bounceX();
+	if (m_ball.getPosition().position.x < -view.getSize().x / 2) 
+	{ 
+		m_ball.bounceX(); 
+		m_plop.play();
+	}
+		
 	if (m_ball.getPosition().position.x + m_ball.getPosition().size.x > view.getSize().x / 2)
+	{
+		m_gameOver.play();
 		m_target_type = GameStateType::main_menu;
+	}
 	if (m_ball.getPosition().position.y < -view.getSize().y / 2 || m_ball.getPosition().position.y + m_ball.getPosition().size.y > view.getSize().y / 2)
+	{
 		m_ball.bounceY();
+		m_plop.play();
+	}
 
 	// paddle collisions
 	float closestX = std::clamp(m_ball.getCenter().x, m_paddle.getPosition().position.x, m_paddle.getPosition().position.x + m_paddle.getPosition().size.x);
@@ -93,14 +106,6 @@ void GameplayState::handleBall(sf::RenderWindow& window)
 	if (dist <= m_ball.getRadius())
 	{
 		m_ball.bounceX();
+		m_plop.play();
 	}
-
-
-	/*if (m_ball.getPosition().position.x + m_ball.getPosition().size.x > m_paddle.getPosition().position.x &&
-		m_ball.getPosition().position.x + m_ball.getPosition().size.x < m_paddle.getPosition().position.x + 5 &&
-		m_ball.getPosition().position.y < m_paddle.getPosition().position.y + m_paddle.getPosition().size.y &&
-		m_ball.getPosition().position.y + m_ball.getPosition().size.y > m_paddle.getPosition().position.y)
-	{
-		m_ball.bounceX();
-	}*/
 }

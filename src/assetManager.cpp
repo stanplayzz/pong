@@ -2,9 +2,7 @@
 
 #include <filesystem>
 
-namespace fs = std::filesystem;
-
-static sf::Font& AssetManager::getFont(const std::string& name)
+sf::Font& AssetManager::getFont(const std::string& name)
 {
 	auto& instance = getInstance();
 
@@ -14,13 +12,34 @@ static sf::Font& AssetManager::getFont(const std::string& name)
 		return it->second;
 	}
 	sf::Font font;
-	std::string path = fs::path("assets/fonts") / name;
+	std::string path = (std::filesystem::path("assets/fonts") / name).string();
 
-	if (!font.loadFromFile(path))
+	if (!font.openFromFile(path))
 	{
 		throw std::runtime_error("Failed to open font at: " + path);
 	}
 
 	instance.fonts[name] = std::move(font);
 	return instance.fonts[name];
+}
+
+sf::SoundBuffer& AssetManager::getSoundBuffer(const std::string& name)
+{
+	auto& instance = getInstance();
+
+	auto it = instance.sounds.find(name);
+	if (it != instance.sounds.end())
+	{
+		return it->second;
+	}
+	sf::SoundBuffer SoundBuffer;
+	std::string path = (std::filesystem::path("assets/sfx") / name).string();
+
+	if (!SoundBuffer.loadFromFile(path))
+	{
+		throw std::runtime_error("Failed to open sound at: " + path);
+	}
+
+	instance.sounds[name] = std::move(SoundBuffer);
+	return instance.sounds[name];
 }
